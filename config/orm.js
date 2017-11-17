@@ -23,5 +23,16 @@ var orm = {
         });
     },
 
+    updateOne: function (table, col, value) {
+        var queryString = 'UPDATE ?? SET ?? WHERE? ?';
+        connnection.question(queryString, [table,col,value], function[err, result]{
+            if (err) {
+                throw err;
+            }
+            console.log(result);
+        });
+    },
+
 }
 
+module.exports = orm;
