@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var PORT = 3000;
+var bodyParser = require('body-parser');
 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,7 +19,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "burgers"
+    database: "burgers_db"
 });
 
 connection.connect(function(err) {
@@ -30,6 +31,24 @@ connection.connect(function(err) {
     console.log("connected as id " + connection.threadId);
 });
 
+// Root get route.
+app.get("/", function(req, res) {
+    connection.query("SELECT * FROM burgers;", function(err, data) {
+        if (err) {
+            throw err;
+        }
+
+        // Test it.
+        // console.log('The solution is: ', data);
+
+        // Test it.
+        // res.send(data);
+
+        res.render("index.handlebars", { burgers: data });
+    });
+});
+
+
 
 //ROUTER
 //The below points our server to a series of 'route' files
@@ -37,7 +56,7 @@ connection.connect(function(err) {
 //or request data from various URLs
 //==========================================================
 var router = express.Router();
-var burger = require(../models/burger.js);
+// var burger = require('./models/burger);
 
 
 app.listen(PORT, function(){
